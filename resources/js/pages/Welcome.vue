@@ -1,575 +1,512 @@
 <template>
-  <div :class="['min-h-screen font-sans antialiased', themeClass]" >
+  <div :class="['min-h-screen font-sans antialiased text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-950', themeClass]" >
     <!-- HEADER -->
-    <header class="sticky top-0 z-50 bg-white/50 dark:bg-black/50 backdrop-blur border-b border-gray-100 dark:border-[#0b0b0b]">
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-3" aria-label="Inicio - WebPerf³ct">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6d28d9] to-[#06b6d4] flex items-center justify-center text-white font-extrabold shadow">
-            WP
+        <a href="/" class="flex items-center gap-3 group" aria-label="Inicio - Perf3ct Solutions">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-extrabold shadow-lg group-hover:scale-105 transition-transform">
+            PS
           </div>
           <div class="leading-tight">
-            <div class="text-sm font-semibold">WebPerf³ct</div>
-            <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d] -mt-0.5">Marketing & Software</div>
+            <div class="text-sm font-bold tracking-tight">Perf3ct Solutions</div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Soluciones Digitales</div>
           </div>
         </a>
 
-        <div class="hidden lg:flex items-center gap-6">
-          <a href="#projects" class="text-sm hover:underline">Proyectos</a>
-          <a href="#services" class="text-sm hover:underline">Servicios</a>
-          <a href="#about" class="text-sm hover:underline">Nosotros</a>
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="#about" class="text-sm font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Sobre mí</a>
+          <a href="#services" class="text-sm font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Servicios</a>
+          <a href="#portfolio" class="text-sm font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Portafolio</a>
+          <a href="#testimonials" class="text-sm font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Testimonios</a>
         </div>
 
-        <div class="flex items-center gap-2">
-          <!-- Search quick -->
-          <div class="hidden md:flex items-center bg-gray-100 dark:bg-white/6 rounded-full px-3 py-1 gap-2">
-            <svg class="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 1 5.293-14.293A8 8 0 0 1 11 19z" stroke="currentColor" stroke-width="1.4"/></svg>
-            <input v-model="searchTerm" @keydown.enter.prevent="focusProjects" aria-label="Buscar proyectos" placeholder="Buscar proyectos..." class="bg-transparent text-sm outline-none w-40" />
-          </div>
-
+        <div class="flex items-center gap-4">
           <!-- Theme toggle -->
-          <button @click="toggleTheme" :aria-pressed="isDark.toString()" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-white/5" :title="isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'">
-            <svg v-if="isDark" class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <svg v-else class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 3v1M12 20v1M4.2 4.2l.7.7M18.1 18.1l.7.7M1 12h1M22 12h1M4.2 19.8l.7-.7M18.1 5.9l.7-.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <button @click="toggleTheme" :aria-pressed="isDark.toString()" class="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" :title="isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'">
+            <Sun v-if="isDark" class="w-5 h-5" />
+            <Moon v-else class="w-5 h-5" />
           </button>
 
-          <!-- Auth buttons (clases EXACTAS que pediste) -->
-          <a
-            href="/login"
-            class="inline-block rounded-sm border border-transparent px-4 py-1 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-          >
-            Log in
-          </a>
-          <a
-            href="/register"
-            class="inline-block rounded-sm border border-[#19140035] px-4 py-1 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-          >
-            Register
+          <a href="#contact" class="hidden sm:inline-flex items-center justify-center rounded-full bg-slate-900 dark:bg-white px-5 py-2 text-sm font-semibold text-white dark:text-slate-900 shadow-sm hover:bg-slate-700 dark:hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all">
+            Cotizar ahora
           </a>
 
-          <!-- mobile menu -->
-          <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 ml-1 rounded-md" :aria-expanded="String(mobileOpen)" aria-label="Abrir menú">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-              <path v-if="!mobileOpen" d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path v-else d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+          <!-- mobile menu button -->
+          <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 -mr-2 text-slate-600 dark:text-slate-300" aria-label="Menu">
+             <Menu v-if="!mobileOpen" class="w-6 h-6" />
+             <X v-else class="w-6 h-6" />
           </button>
         </div>
       </div>
 
-      <div v-if="mobileOpen" class="lg:hidden border-t border-gray-100 dark:border-[#0b0b0b]">
-        <div class="px-6 py-4 flex flex-col gap-3">
-          <a href="#projects" class="text-sm">Proyectos</a>
-          <a href="#services" class="text-sm">Servicios</a>
-          <a href="#about" class="text-sm">Nosotros</a>
-          <a href="#contact" class="text-sm">Contacto</a>
-        </div>
+      <!-- Mobile Menu -->
+      <div v-if="mobileOpen" class="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <nav class="px-6 py-4 flex flex-col gap-4">
+          <a href="#about" @click="mobileOpen = false" class="text-sm font-medium py-2 border-b border-slate-100 dark:border-slate-800">Sobre mí</a>
+          <a href="#services" @click="mobileOpen = false" class="text-sm font-medium py-2 border-b border-slate-100 dark:border-slate-800">Servicios</a>
+          <a href="#portfolio" @click="mobileOpen = false" class="text-sm font-medium py-2 border-b border-slate-100 dark:border-slate-800">Portafolio</a>
+          <a href="#testimonials" @click="mobileOpen = false" class="text-sm font-medium py-2 border-b border-slate-100 dark:border-slate-800">Testimonios</a>
+          <a href="#contact" @click="mobileOpen = false" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 py-2">Solicitar presupuesto</a>
+        </nav>
       </div>
     </header>
 
-    <!-- HERO: creativo, con mockup y CTA -->
     <main>
-      <section class="relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center py-20 lg:py-28">
-          <!-- Left: copy -->
-          <div class="lg:col-span-7 space-y-6">
-            <div class="inline-flex items-center gap-3 bg-[#f1f5f9] dark:bg-white/5 px-3 py-1 rounded-full text-xs font-medium text-[#0b6b4f] w-max">
-              Tecnología · Marketing · Productos
-            </div>
+      <!-- HERO SECTION -->
+      <section class="relative pt-20 pb-32 overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+             <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-indigo-500/10 blur-[100px]"></div>
+             <div class="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-cyan-500/10 blur-[100px]"></div>
+        </div>
 
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
-              Diseñamos, construimos y promocionamos software que escala negocios
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-16">
+          <div class="lg:w-1/2 space-y-8 text-center lg:text-left">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+              Perf3ct Solutions <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">Soluciones digitales</span> que impulsan tu negocio
             </h1>
-
-            <p class="text-lg text-[#4b4b47] dark:text-[#cfcfcf] max-w-2xl leading-relaxed">
-              E-commerce (Bagisto), CRM (Krayin), ERP (Aureus) y apps en Flutter. Experiencia end-to-end: producto, arquitectura, growth y operaciones.
+            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              Copywriting, ebooks, logos, música con IA y contenidos profesionales, todo en un solo lugar. Creatividad y estrategia unidas para destacar tu marca.
             </p>
-
-            <div class="flex flex-wrap gap-3 items-center">
-              <a href="#projects" class="inline-flex items-center gap-3 rounded-full bg-[#7c3aed] text-white px-5 py-3 font-semibold shadow hover:brightness-95 transition">
-                Ver proyectos
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <a href="#contact" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all hover:scale-105">
+                Solicita tu proyecto ahora
+                <ArrowRight class="w-4 h-4" />
               </a>
-
-              <a href="/contact" class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-gray-200 dark:border-[#222] text-sm">
-                Solicitar demo
-              </a>
-
-              <a
-                href="/register"
-                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-              >
-                Register
+              <a href="#portfolio" class="text-sm font-semibold leading-6 text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                Ver trabajos <span aria-hidden="true">→</span>
               </a>
             </div>
-
-            <!-- UX quick controls: search, view, sort -->
-            <div class="mt-6 flex flex-col sm:flex-row sm:items-center gap-3">
-              <div class="flex items-center gap-2 bg-gray-100 dark:bg-white/6 rounded-full px-3 py-1">
-                <svg class="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 1 5.293-14.293A8 8 0 0 1 11 19z" stroke="currentColor" stroke-width="1.4"/></svg>
-                <input v-model="searchTerm" placeholder="Buscar proyectos, tecnología o etiquetas..." class="bg-transparent outline-none text-sm w-64" aria-label="Buscar proyectos" />
-                <button @click="searchTerm = ''" v-if="searchTerm" class="text-xs px-2">Limpiar</button>
-              </div>
-
-              <div class="ml-auto flex items-center gap-2">
-                <label class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">Vista</label>
-                <div role="tablist" class="inline-flex bg-gray-100 dark:bg-white/6 rounded-full p-1">
-                  <button @click="viewMode = 'grid'" :aria-pressed="viewMode === 'grid'" class="px-3 py-1 rounded-full text-sm" :class="viewMode === 'grid' ? 'bg-[#7c3aed] text-white' : ''" title="Vista en cuadrícula">Grid</button>
-                  <button @click="viewMode = 'list'" :aria-pressed="viewMode === 'list'" class="px-3 py-1 rounded-full text-sm" :class="viewMode === 'list' ? 'bg-[#7c3aed] text-white' : ''" title="Vista en lista">Lista</button>
-                </div>
-
-                <label class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">Orden</label>
-                <select v-model="sortBy" class="text-sm rounded-md bg-white dark:bg-[#071010] border border-gray-200 dark:border-[#111] px-2 py-1">
-                  <option value="featured">Destacados</option>
-                  <option value="newest">Más recientes</option>
-                  <option value="alpha">A → Z</option>
-                </select>
-              </div>
-            </div>
           </div>
 
-          <!-- Right: device mockup + gallery -->
-          <div class="lg:col-span-5">
-            <div class="rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-[#0f0f0f] bg-white dark:bg-[#071010]">
-              <div class="p-4">
-                <div class="relative rounded-xl overflow-hidden aspect-[9/16] bg-gray-50 dark:bg-[#061414] flex items-stretch">
-                  <!-- phone mockup left with image -->
-                  <div class="w-full">
-                    <img :src="mockupImage" alt="Mockup app" class="w-full h-full object-cover" loading="lazy" />
-                  </div>
+          <!-- Hero Illustration / Mockup -->
+          <div class="lg:w-1/2 relative lg:h-[600px] w-full flex items-center justify-center">
+             <!-- Abstract Composition using CSS/Icons due to lack of image assets -->
+             <div class="relative w-full max-w-md aspect-square">
+                 <!-- Floating Elements Animation -->
+                 <div class="absolute top-0 right-0 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-xl flex items-center gap-4 animate-float-slow z-20 border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><BookOpen class="w-6 h-6" /></div>
+                    <div>
+                        <div class="text-sm font-bold">Ebooks Premium</div>
+                        <div class="text-xs text-slate-500">Diseño & Contenido</div>
+                    </div>
+                 </div>
+
+                 <div class="absolute bottom-10 left-0 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-xl flex items-center gap-4 animate-float-medium z-20 border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center"><Music class="w-6 h-6" /></div>
+                    <div>
+                        <div class="text-sm font-bold">Música IA</div>
+                        <div class="text-xs text-slate-500">Suno Productions</div>
+                    </div>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between">
-                  <div>
-                    <div class="text-xs text-[#6b6b67] dark:text-[#cfcfcf]">Highlights</div>
-                    <div class="text-lg font-semibold">Bagisto · Omni-channel</div>
-                  </div>
+                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-full opacity-20 blur-3xl animate-pulse-slow"></div>
+                 
+                 <div class="relative z-10 bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 aspect-[4/5] mx-auto rotate-[-6deg] hover:rotate-0 transition-transform duration-500">
+                    <div class="h-full w-full flex flex-col p-6 bg-white dark:bg-slate-900">
+                        <div class="w-full h-40 bg-slate-200 dark:bg-slate-800 rounded-lg mb-4 animate-pulse"></div>
+                        <div class="w-3/4 h-6 bg-slate-200 dark:bg-slate-800 rounded mb-2"></div>
+                        <div class="w-1/2 h-6 bg-slate-200 dark:bg-slate-800 rounded mb-6"></div>
+                        <div class="space-y-3">
+                            <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                            <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                            <div class="w-5/6 h-3 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                        </div>
+                    </div>
+                 </div>
+             </div>
+          </div>
+        </div>
+      </section>
 
-                  <div class="flex items-center gap-3">
-                    <button @click="openProjectModal(projects[0])" class="rounded-md px-4 py-2 bg-[#7c3aed] text-white text-sm shadow hover:brightness-95">Ver caso</button>
-                    <a href="/contact" class="rounded-md px-3 py-2 border border-gray-200 dark:border-[#111] text-sm">Contacto</a>
-                  </div>
+      <!-- ABOUT SECTION -->
+      <section id="about" class="py-24 bg-slate-50 dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="relative w-64 h-64">
+                         <div class="absolute inset-0 rounded-full border-2 border-indigo-600 border-dashed animate-spin-slow"></div>
+                         <div class="absolute inset-2 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center shadow-lg">
+                            <User class="w-32 h-32 text-slate-400" />
+                            <!-- Placeholder for Esequiel's photo -->
+                            <!-- <img src="/path/to/profile.jpg" alt="Esequiel Alfaro" class="w-full h-full object-cover" /> -->
+                         </div>
+                    </div>
                 </div>
-
-                <div class="mt-4 grid grid-cols-3 gap-2">
-                  <img v-for="(t, i) in thumbs" :key="i" :src="t" class="w-full h-20 object-cover rounded-lg" :alt="'Thumb ' + i" loading="lazy" />
+                <div class="md:w-2/3 text-center md:text-left">
+                    <h2 class="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-2">Sobre mí / Nosotros</h2>
+                    <h3 class="text-3xl font-bold tracking-tight mb-6">Hola, soy Esequiel Alfaro.</h3>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-8">
+                        Soy especialista en soluciones digitales: <strong>copywriting, creación de ebooks, diseño de logos y producción musical con IA</strong>. 
+                        Mi misión es ayudarte a que tu negocio o proyecto destaque con contenido profesional, ético y creativo.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        <div class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <PenTool class="w-8 h-8 text-indigo-500" />
+                            <span class="text-sm font-medium">Diseño</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <FileText class="w-8 h-8 text-teal-500" />
+                            <span class="text-sm font-medium">Copywriting</span>
+                        </div>
+                         <div class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <BookOpen class="w-8 h-8 text-pink-500" />
+                            <span class="text-sm font-medium">Ebooks</span>
+                        </div>
+                         <div class="flex flex-col items-center gap-2 p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <Music class="w-8 h-8 text-purple-500" />
+                            <span class="text-sm font-medium">Música IA</span>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
+        </div>
+      </section>
 
-            <!-- badges -->
-            <div class="mt-4 grid grid-cols-2 gap-3">
-              <div class="p-3 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-xl flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/laravel/laravel-plain.svg" alt="Laravel" class="w-6 h-6" />
-                <div>
-                  <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">Backend</div>
-                  <div class="text-sm font-semibold">Laravel</div>
+      <!-- SERVICES SECTION -->
+      <section id="services" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-2">Mis Servicios</h2>
+            <h3 class="text-3xl sm:text-4xl font-bold tracking-tight">Soluciones a tu medida</h3>
+            <p class="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Calidad profesional y precios transparentes para impulsar tu proyecto.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Service Cards -->
+            <div v-for="service in services" :key="service.title" class="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:border-indigo-500/50 transition-all duration-300">
+                <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <component :is="service.icon" class="w-24 h-24" />
                 </div>
-              </div>
-              <div class="p-3 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-xl flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/flutter/flutter-original.svg" alt="Flutter" class="w-6 h-6" />
-                <div>
-                  <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">Mobile</div>
-                  <div class="text-sm font-semibold">Flutter</div>
+                
+                <div class="w-12 h-12 rounded-lg bg-indigo-50 dark:bg-slate-800 flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform bg-gradient-to-br from-indigo-500/10 to-purple-500/10">
+                    <component :is="service.icon" class="w-6 h-6" />
                 </div>
-              </div>
+
+                <h4 class="text-xl font-bold mb-3 group-hover:text-indigo-600 transition-colors">{{ service.title }}</h4>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 min-h-[60px]">{{ service.description }}</p>
+
+                <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-auto">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-slate-500">Precio estimado</span>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white">{{ service.price }}</span>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- PROJECTS section with grid/list toggles and no overlapping text -->
-      <section id="projects" class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <div class="mb-6 flex items-center justify-between gap-6">
-          <div>
-            <h2 class="text-2xl font-bold">Proyectos & Software</h2>
-            <p class="text-sm text-[#6b6b67] dark:text-[#9f9f9d]">Filtra, busca y cambia la vista. UX pensada para encontrar proyectos rápido.</p>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2 bg-gray-100 dark:bg-white/5 rounded-full px-3 py-1 text-xs">
-              <button v-for="f in filters" :key="f" @click="selectedFilter = f" :aria-pressed="selectedFilter === f"
-                :class="['px-3 py-1 rounded-full text-sm', selectedFilter === f ? 'bg-[#7c3aed] text-white' : 'text-[#444] dark:text-[#cfcfcf]']">
-                {{ f }}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grid Mode -->
-        <div v-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <article v-for="p in sortedFilteredProjects" :key="p.id" class="group bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl overflow-hidden shadow-sm transform hover:-translate-y-1 transition">
-            <div class="relative aspect-[16/10] bg-gray-100 dark:bg-[#061414]">
-              <img :src="p.image" :alt="p.title" class="w-full h-full object-cover" loading="lazy" />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
-
-              <div class="absolute left-4 bottom-4 text-white">
-                <div class="text-lg font-semibold">{{ p.title }}</div>
-                <div class="text-xs text-white/80">{{ p.type }}</div>
-              </div>
-
-              <div class="absolute right-4 top-4 flex gap-2">
-                <span v-for="t in p.tags" :key="t" class="text-xs bg-white/70 dark:bg-white/10 px-2 py-1 rounded-md">{{ t }}</span>
-              </div>
+     <!-- PORTFOLIO / TRABAJOS DE MUESTRA -->
+      <section id="portfolio" class="py-24 bg-slate-50 dark:bg-slate-900/30">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-12">
+                 <h2 class="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-2">Portfolio</h2>
+                 <h3 class="text-3xl font-bold tracking-tight">Trabajos de muestra</h3>
+                 <p class="mt-4 text-slate-600 dark:text-slate-400">Resultados reales que demuestran calidad y compromiso.</p>
             </div>
 
-            <div class="p-4">
-              <p class="text-sm text-[#4b4b47] dark:text-[#cfcfcf] mb-3 leading-relaxed">{{ p.description }}</p>
-
-              <div class="flex items-center justify-between">
-                <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">{{ p.year }}</div>
-                <div class="flex items-center gap-2">
-                  <button @click="openProjectModal(p)" class="text-sm px-3 py-1 rounded-md border border-gray-200 dark:border-[#161616]">Ver</button>
-                  <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener" class="text-sm px-3 py-1 rounded-md bg-[#7c3aed] text-white">Demo</a>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Sample Portfolio Item 1 (Ebook) -->
+                <div class="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                    <div class="aspect-video bg-indigo-100 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <BookOpen class="w-16 h-16 text-indigo-300 dark:text-slate-700 group-hover:scale-110 transition-transform" />
+                        <!-- <img src="..." class="absolute inset-0 w-full h-full object-cover"> -->
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                             <h4 class="font-bold text-lg">Guía de Marketing Digital</h4>
+                             <span class="px-2 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs rounded-full font-medium">Ebook</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Diseño completo y redacción de 50 páginas. Aumento de leads en un 20% para el cliente.</p>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </article>
-        </div>
 
-        <!-- List Mode -->
-        <div v-else class="flex flex-col gap-4">
-          <div v-for="p in sortedFilteredProjects" :key="p.id" class="flex items-stretch gap-4 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl p-4">
-            <div class="w-40 min-w-[160px] rounded-lg overflow-hidden bg-gray-100 dark:bg-[#061414]">
-              <img :src="p.image" :alt="p.title" class="w-full h-28 object-cover" loading="lazy" />
-            </div>
-            <div class="flex-1">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <div class="text-lg font-semibold">{{ p.title }}</div>
-                  <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">{{ p.type }} • {{ p.year }}</div>
+                 <!-- Sample Portfolio Item 2 (Music) -->
+                <div class="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                     <div class="aspect-video bg-purple-100 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <Music class="w-16 h-16 text-purple-300 dark:text-slate-700 group-hover:scale-110 transition-transform" />
+                         <!-- <img src="..." class="absolute inset-0 w-full h-full object-cover"> -->
+                         <div class="absolute inset-0 flex items-center justify-center">
+                             <div class="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform">
+                                 <Play class="w-5 h-5 text-purple-600 ml-1" />
+                             </div>
+                         </div>
+                    </div>
+                    <div class="p-6">
+                         <div class="flex justify-between items-start mb-2">
+                             <h4 class="font-bold text-lg">Jingle Corporativo "TechFlow"</h4>
+                             <span class="px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded-full font-medium">Audio IA</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Composición moderna y dinámica generada con Suno para intro de YouTube.</p>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <a v-if="p.demo" :href="p.demo" target="_blank" rel="noopener" class="text-sm px-3 py-1 rounded-md bg-[#7c3aed] text-white">Demo</a>
-                  <button @click="openProjectModal(p)" class="text-sm px-3 py-1 rounded-md border border-gray-200 dark:border-[#161616]">Ver</button>
+
+                 <!-- Sample Portfolio Item 3 (Web Copy) -->
+                <div class="group bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                     <div class="aspect-video bg-teal-100 dark:bg-slate-800 relative flex items-center justify-center overflow-hidden">
+                        <Monitor class="w-16 h-16 text-teal-300 dark:text-slate-700 group-hover:scale-110 transition-transform" />
+                    </div>
+                    <div class="p-6">
+                         <div class="flex justify-between items-start mb-2">
+                             <h4 class="font-bold text-lg">Landing Page "EcoStore"</h4>
+                             <span class="px-2 py-1 bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 text-xs rounded-full font-medium">Copywriting</span>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Redacción persuasiva enfocada en conversión. Tono ecológico y cercano.</p>
+                    </div>
                 </div>
-              </div>
-
-              <p class="text-sm text-[#4b4b47] dark:text-[#cfcfcf] mt-2 leading-relaxed">{{ p.description }}</p>
-              <div class="mt-3 flex items-center gap-2 text-xs text-[#6b6b67] dark:text-[#9f9f9d]">
-                <span v-for="s in p.stack" :key="s" class="px-2 py-1 bg-gray-100 dark:bg-white/5 rounded-md">{{ s }}</span>
-              </div>
             </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- Services / About -->
-      <section id="services" class="bg-gray-50 dark:bg-[#071010] py-12">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div class="lg:col-span-1">
-            <h3 class="text-xl font-semibold">Cómo trabajamos</h3>
-            <p class="text-sm text-[#6b6b67] dark:text-[#9f9f9d]">Producto, engineering y growth — en un mismo equipo con objetivos claros.</p>
-          </div>
-
-          <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="p-6 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl">
-              <h4 class="font-semibold mb-2">Estrategia de producto</h4>
-              <p class="text-sm text-[#5b5b57] dark:text-[#bdbdbd]">Discovery, validación y roadmap con métricas OKR/ KPI.</p>
+            
+             <div class="text-center mt-12">
+                 <p class="text-sm text-slate-500 italic">"Los trabajos ficticios pueden verse profesionales si demuestran capacidad de entrega."</p>
             </div>
-
-            <div class="p-6 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl">
-              <h4 class="font-semibold mb-2">Ingeniería & Integraciones</h4>
-              <p class="text-sm text-[#5b5b57] dark:text-[#bdbdbd]">Arquitectura escalable, API-first y despliegues automáticos.</p>
-            </div>
-
-            <div class="p-6 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl">
-              <h4 class="font-semibold mb-2">Growth & Performance</h4>
-              <p class="text-sm text-[#5b5b57] dark:text-[#bdbdbd]">Experimentación, CRO y campañas data-driven.</p>
-            </div>
-
-            <div class="p-6 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl">
-              <h4 class="font-semibold mb-2">Soporte & Operaciones</h4>
-              <p class="text-sm text-[#5b5b57] dark:text-[#bdbdbd]">Monitoreo, SRE y acuerdos SLA.</p>
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- Testimonials -->
-      <section id="about" class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <h3 class="text-xl font-semibold mb-6">Testimonios</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <blockquote v-for="(t, i) in testimonials" :key="i" class="p-6 bg-white dark:bg-[#081010] border border-gray-100 dark:border-[#111] rounded-2xl">
-            <p class="text-sm text-[#333] dark:text-[#d9d9d9]">“{{ t.quote }}”</p>
-            <footer class="mt-4 flex items-center gap-3">
-              <img :src="t.avatar" :alt="t.name" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
-              <div>
-                <div class="text-sm font-semibold">{{ t.name }}</div>
-                <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">{{ t.role }}</div>
-              </div>
-            </footer>
-          </blockquote>
-        </div>
+      <!-- TESTIMONIALS -->
+      <section id="testimonials" class="py-24">
+         <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <h2 class="text-center text-3xl font-bold mb-16">Lo que dicen mis clientes</h2>
+             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <div class="p-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm relative">
+                     <Quote class="w-8 h-8 text-indigo-200 dark:text-slate-700 absolute top-6 left-6" />
+                     <p class="mt-6 mb-6 text-slate-600 dark:text-slate-300 italic relative z-10">"El ebook que diseñó Esequiel superó mis expectativas. Muy profesional y entregado a tiempo."</p>
+                     <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold">MR</div>
+                         <div>
+                             <div class="font-bold text-sm">María Rodriguez</div>
+                             <div class="text-xs text-slate-500">Emprendedora</div>
+                         </div>
+                     </div>
+                 </div>
+                 
+                  <div class="p-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm relative">
+                     <Quote class="w-8 h-8 text-indigo-200 dark:text-slate-700 absolute top-6 left-6" />
+                     <p class="mt-6 mb-6 text-slate-600 dark:text-slate-300 italic relative z-10">"Excelente trabajo con el logo. Captó la esencia de mi marca a la primera. Recomendado."</p>
+                     <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold">CP</div>
+                         <div>
+                             <div class="font-bold text-sm">Carlos Pérez</div>
+                             <div class="text-xs text-slate-500">CEO Startup</div>
+                         </div>
+                     </div>
+                 </div>
+                 
+                  <div class="p-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm relative">
+                     <Quote class="w-8 h-8 text-indigo-200 dark:text-slate-700 absolute top-6 left-6" />
+                     <p class="mt-6 mb-6 text-slate-600 dark:text-slate-300 italic relative z-10">"La música generada para mi anuncio de Instagram quedó perfecta. Le dio el toque profesional que faltaba."</p>
+                     <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold">AL</div>
+                         <div>
+                             <div class="font-bold text-sm">Ana López</div>
+                             <div class="text-xs text-slate-500">Marketing Manager</div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
       </section>
 
-      <!-- final CTA -->
-      <section id="contact" class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <div class="rounded-2xl p-8 bg-gradient-to-r from-white to-[#f8fafc] dark:from-[#071010] dark:to-[#041010] border border-gray-100 dark:border-[#111] shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 class="text-2xl font-semibold">¿Listo para lanzar tu producto?</h3>
-            <p class="text-sm text-[#6b6b67] dark:text-[#9f9f9d]">Agendemos una consultoría y te damos una estimación de 48 horas.</p>
-          </div>
+      <!-- CONTACT CTA & FORM -->
+        <section id="contact" class="py-24 bg-gradient-to-br from-indigo-900 to-slate-900 text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <div class="flex flex-col justify-center">
+                        <h2 class="text-3xl sm:text-4xl font-bold mb-6">¿Listo para llevar tu proyecto al siguiente nivel?</h2>
+                        <p class="text-indigo-200 text-lg mb-8">Contáctame y comencemos hoy mismo. Recibirás una respuesta en menos de 24 horas.</p>
+                        
+                        <div class="space-y-4">
+                            <a href="mailto:contacto@perf3ct.com" class="flex items-center gap-3 text-indigo-100 hover:text-white transition-colors">
+                                <Mail class="w-5 h-5" />
+                                <span>contacto@perf3ct.com</span>
+                            </a>
+                            <!-- Socials Placeholder -->
+                             <div class="flex gap-4 mt-6">
+                                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" aria-label="LinkedIn"><Linkedin class="w-5 h-5"/></a>
+                                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" aria-label="Instagram"><Instagram class="w-5 h-5"/></a>
+                                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors" aria-label="YouTube"><Youtube class="w-5 h-5"/></a>
+                            </div>
+                        </div>
+                    </div>
 
-          <div class="flex gap-3">
-            <a href="/contact" class="rounded-md px-5 py-3 bg-[#7c3aed] text-white font-semibold">Agendar consultoría</a>
-            <a href="/contact" class="rounded-md px-5 py-3 border border-gray-200 dark:border-[#111]">Enviar brief</a>
-          </div>
-        </div>
-      </section>
+                    <div class="bg-white text-slate-900 rounded-2xl p-8 shadow-2xl">
+                        <h3 class="text-2xl font-bold mb-6">Solicitar presupuesto</h3>
+                        <form @submit.prevent="submitForm" class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre</label>
+                                <input type="text" id="name" v-model="form.name" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2.5 border" placeholder="Tu nombre" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                                <input type="email" id="email" v-model="form.email" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2.5 border" placeholder="tu@email.com" required>
+                            </div>
+                             <div>
+                                <label for="service" class="block text-sm font-medium text-slate-700 mb-1">Servicio de interés</label>
+                                <select id="service" v-model="form.service" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2.5 border" required>
+                                    <option value="" disabled selected>Selecciona una opción</option>
+                                    <option v-for="s in services" :key="s.title" :value="s.title">{{ s.title }}</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-slate-700 mb-1">Mensaje</label>
+                                <textarea id="message" v-model="form.message" rows="3" class="w-full rounded-lg border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2.5 border" placeholder="Cuéntame sobre tu proyecto..." required></textarea>
+                            </div>
+                            
+                            <div class="pt-2">
+                                <button type="submit" class="w-full rounded-lg bg-indigo-600 px-5 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors">
+                                    Enviar solicitud
+                                </button>
+                                <p class="text-center text-xs text-slate-500 mt-3 flex items-center justify-center gap-1">
+                                    <Lock class="w-3 h-3" /> Pagos seguros vía PayPal / Wise / Cripto
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-gray-100 dark:border-[#121210] bg-white/50 dark:bg-transparent">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-md bg-gradient-to-br from-[#7c3aed] to-[#06b6d4] text-white flex items-center justify-center font-bold">WP</div>
-          <div>
-            <div class="font-semibold">WebPerf³ct</div>
-            <div class="text-xs text-[#6b6b67] dark:text-[#9f9f9d]">Agencia & Desarrollo</div>
-          </div>
+    <footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold shadow-md text-xs">PS</div>
+                 <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">Perf3ct Solutions</span>
+            </div>
+            
+            <div class="text-sm text-slate-500 dark:text-slate-400">
+                © 2026 Perf3ct Solutions – Todos los derechos reservados.
+            </div>
+            
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Política de Privacidad</a>
+                <a href="#" class="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Términos y Condiciones</a>
+            </div>
         </div>
-
-        <div class="text-sm text-[#6b6b67] dark:text-[#9f9f9d]">© {{ new Date().getFullYear() }} WebPerf³ct — Todos los derechos reservados</div>
-
-        <nav class="flex items-center gap-4 text-sm text-[#6b6b67] dark:text-[#9f9f9d]">
-          <a href="/privacy" class="hover:underline">Privacidad</a>
-          <a href="/terms" class="hover:underline">Términos</a>
-          <a href="/contact" class="hover:underline">Contacto</a>
-        </nav>
-      </div>
     </footer>
-
-    <!-- MODAL -->
-    <div v-if="modalOpen" class="fixed inset-0 z-60 flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-black/50" @click="closeModal" aria-hidden="true"></div>
-
-      <div role="dialog" aria-modal="true" class="relative z-10 max-w-4xl w-full rounded-2xl overflow-hidden bg-white dark:bg-[#071010] border border-gray-100 dark:border-[#111] shadow-2xl">
-        <div class="p-6">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <h3 class="text-xl font-bold">{{ modalProject.title }}</h3>
-              <div class="text-sm text-[#6b6b67] dark:text-[#9f9f9d]">{{ modalProject.type }} • {{ modalProject.year }}</div>
-            </div>
-            <button @click="closeModal" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-white/5" aria-label="Cerrar modal">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="1.6"/></svg>
-            </button>
-          </div>
-
-          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="aspect-[16/10] rounded-lg bg-gray-100 dark:bg-[#061414] overflow-hidden">
-              <img :src="modalProject.image" :alt="modalProject.title" class="w-full h-full object-cover" />
-            </div>
-
-            <div>
-              <p class="text-sm text-[#4b4b47] dark:text-[#cfcfcf] mb-4">{{ modalProject.description }}</p>
-
-              <div class="mb-3">
-                <h4 class="text-xs text-[#6b6b67] dark:text-[#9f9f9d] mb-2">Tecnologías</h4>
-                <div class="flex flex-wrap gap-2">
-                  <span v-for="t in modalProject.stack" :key="t" class="text-xs px-2 py-1 rounded-md bg-gray-100 dark:bg-white/5">{{ t }}</span>
-                </div>
-              </div>
-
-              <div class="flex gap-3 mt-4">
-                <a v-if="modalProject.demo" :href="modalProject.demo" target="_blank" rel="noopener" class="rounded-md px-4 py-2 bg-[#7c3aed] text-white">Ver demo</a>
-                <a href="/contact" class="rounded-md px-4 py-2 border border-gray-200 dark:border-[#111]">Solicitar proyecto</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script setup>
-/*
-  Welcome.vue — versión avanzada:
-  - Theme switch (detecta preferencia y guarda en localStorage).
-  - Vista Grid / List, orden, búsqueda, filtros.
-  - Modal accesible.
-  - Solo depende de Vue 3 + Tailwind (sin Inertia/Router).
-*/
+import { ref, onMounted, computed, watch } from 'vue';
+import { 
+  Sun, Moon, Menu, X, ArrowRight, BookOpen, Music, 
+  PenTool, FileText, Package, User, Monitor, Play, Quote, Mail,
+  Linkedin, Instagram, Youtube, Lock
+} from 'lucide-vue-next';
 
-import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue';
-
-/* UI state */
+// Mobile menu state
 const mobileOpen = ref(false);
-const modalOpen = ref(false);
-const modalProject = ref({});
-const viewMode = ref('grid'); // 'grid' | 'list'
-const sortBy = ref('featured'); // 'featured' | 'newest' | 'alpha'
-const searchTerm = ref('');
-const selectedFilter = ref('Todos');
 
-/* Theme handling */
-const theme = ref('auto'); // 'auto' | 'dark' | 'light'
+// Theme Handling
 const isDark = ref(false);
-const themeClass = computed(() => (isDark.value ? 'dark' : '') );
+const themeClass = computed(() => isDark.value ? 'dark' : '');
 
-function applyTheme(pref) {
-  if (pref === 'auto') {
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    isDark.value = prefersDark;
-  } else {
-    isDark.value = pref === 'dark';
-  }
-  // update html class
+function toggleTheme() {
+  isDark.value = !isDark.value;
+  localStorage.setItem('ps_theme', isDark.value ? 'dark' : 'light');
   if (isDark.value) document.documentElement.classList.add('dark');
   else document.documentElement.classList.remove('dark');
 }
 
-function toggleTheme() {
-  if (theme.value === 'dark') theme.value = 'light';
-  else if (theme.value === 'light') theme.value = 'auto';
-  else theme.value = 'dark';
-  localStorage.setItem('wp_theme_pref', theme.value);
-  applyTheme(theme.value);
-}
-
 onMounted(() => {
-  const stored = localStorage.getItem('wp_theme_pref');
-  theme.value = stored || 'auto';
-  applyTheme(theme.value);
-
-  // Listen to system changes if in auto
-  if (window.matchMedia) {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener('change', handleSystemThemeChange);
-  }
-});
-
-onBeforeUnmount(() => {
-  if (window.matchMedia) {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.removeEventListener('change', handleSystemThemeChange);
-  }
-});
-
-function handleSystemThemeChange() {
-  if (theme.value === 'auto') applyTheme('auto');
-}
-
-/* computed flag for button icons */
-watch(isDark, (nv) => {
-  // no-op, just reactive
-});
-
-/* Projects data (example) */
-const projects = ref([
-  { id: 'p-1', title: 'Bagisto', type: 'Ecommerce', year: 2024, tags: ['Ecommerce','B2C'], description: 'Tienda modular enterprise con PIM y reglas de precio.', stack: ['Laravel','Vue','Docker'], image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' },
-  { id: 'p-2', title: 'Krayin', type: 'CRM', year: 2023, tags: ['CRM','SaaS'], description: 'CRM con scoring, pipelines y automatizaciones.', stack: ['Laravel','React','Postgres'], image: 'https://images.unsplash.com/photo-1559523166-9f2a7bb8ce1f?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' },
-  { id: 'p-3', title: 'Aureus', type: 'ERP', year: 2022, tags: ['ERP','Accounting'], description: 'ERP para contabilidad, compras y gestión de stock.', stack: ['PHP','Vue','MySQL'], image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' },
-  { id: 'p-4', title: 'Nova App', type: 'Mobile', year: 2024, tags: ['Mobile','Flutter'], description: 'App multiplataforma en Flutter con onboarding optimizado.', stack: ['Flutter','Firebase'], image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' },
-  { id: 'p-5', title: 'Landing Growth', type: 'Web', year: 2024, tags: ['Landing','CRO'], description: 'Landing A/B con aumento de CVR en +34%.', stack: ['Next.js','Vercel'], image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' },
-  { id: 'p-6', title: 'Retail ERP Sync', type: 'ERP', year: 2023, tags: ['ERP','Retail'], description: 'Sincronización POS ⇄ ERP en tiempo real.', stack: ['Node.js','Postgres'], image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop&dpr=1', demo: '#' }
-]);
-
-const filters = ['Todos', 'Ecommerce', 'CRM', 'ERP', 'Mobile', 'Web'];
-
-const mockupImage = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop&dpr=1';
-const thumbs = [
-  'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop&dpr=1',
-  'https://images.unsplash.com/photo-1559523166-9f2a7bb8ce1f?q=80&w=600&auto=format&fit=crop&dpr=1',
-  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop&dpr=1'
-];
-
-/* Search + filter + sort */
-const filteredProjects = computed(() => {
-  const term = searchTerm.value.trim().toLowerCase();
-  return projects.value.filter((p) => {
-    // filter by selectedFilter
-    if (selectedFilter.value !== 'Todos') {
-      const sf = selectedFilter.value.toLowerCase();
-      const typeMatch = p.type.toLowerCase() === sf;
-      const tagMatch = p.tags.some((t) => t.toLowerCase() === sf);
-      if (!typeMatch && !tagMatch) return false;
-    }
-    // search
-    if (!term) return true;
-    return (
-      p.title.toLowerCase().includes(term) ||
-      p.description.toLowerCase().includes(term) ||
-      p.stack.join(' ').toLowerCase().includes(term) ||
-      p.tags.join(' ').toLowerCase().includes(term)
-    );
-  });
-});
-
-const sortedFilteredProjects = computed(() => {
-  const copy = [...filteredProjects.value];
-  if (sortBy.value === 'newest') {
-    copy.sort((a,b) => b.year - a.year);
-  } else if (sortBy.value === 'alpha') {
-    copy.sort((a,b) => a.title.localeCompare(b.title));
+  const stored = localStorage.getItem('ps_theme');
+  if (stored) {
+    isDark.value = stored === 'dark';
   } else {
-    // featured: keep order as is or custom ranking (example: push p-1 first)
-    copy.sort((a,b) => (a.id === 'p-1' ? -1 : 0));
+    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  return copy;
+  
+  if (isDark.value) document.documentElement.classList.add('dark');
 });
 
-/* Modal controls */
-function openProjectModal(p) {
-  modalProject.value = p;
-  modalOpen.value = true;
-  // lock scroll
-  document.documentElement.style.overflow = 'hidden';
-}
-function closeModal() {
-  modalOpen.value = false;
-  modalProject.value = {};
-  document.documentElement.style.overflow = '';
-}
-
-/* Accessibility helper */
-function focusProjects() {
-  const section = document.getElementById('projects');
-  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-/* Testimonials */
-const testimonials = [
-  { name: 'Laura P.', role: 'Head of Growth', quote: 'Transformaron nuestra adquisición. Estrategia y ejecución impecable.', avatar: 'https://picsum.photos/seed/laura/100' },
-  { name: 'Marcos R.', role: 'CEO', quote: 'Subimos 70% las conversiones en 3 meses. Recomendados.', avatar: 'https://picsum.photos/seed/marcos/100' },
-  { name: 'Sofia G.', role: 'Product Lead', quote: 'Equipo flexible, entregas rápidas y enfoque en métricas.', avatar: 'https://picsum.photos/seed/sofia/100' }
+// Services Data
+const services = [
+  { 
+    title: 'Copywriting', 
+    description: 'Textos persuasivos para tu web, anuncios o campañas que conviertan visitantes en clientes.', 
+    price: '$20–$75', 
+    icon: FileText 
+  },
+  { 
+    title: 'Investigación / Resúmenes', 
+    description: 'Investigaciones y resúmenes profesionales, académicos o corporativos, listos para usar.', 
+    price: '$15–$50', 
+    icon: BookOpen 
+  },
+  { 
+    title: 'Ebooks', 
+    description: 'Ebooks diseñados y escritos profesionalmente, listos para vender o compartir.', 
+    price: '$40–$120', 
+    icon: BookOpen 
+  },
+  { 
+    title: 'Pack de contenidos', 
+    description: 'Combinación de copywriting, investigación y diseño, todo en un solo paquete premium.', 
+    price: '$100–$250', 
+    icon: Package 
+  },
+  { 
+    title: 'Logos personalizados', 
+    description: 'Diseños únicos para tu marca, listos para web, redes y material impreso.', 
+    price: '$30–$120', 
+    icon: PenTool 
+  },
+  { 
+    title: 'Producción musical IA', 
+    description: 'Canciones y jingles personalizados con IA, para publicidad, redes o proyectos musicales.', 
+    price: '$60–$180', 
+    icon: Music 
+  },
 ];
 
-/* Defensive: remove scroll lock on unmount */
-onBeforeUnmount(() => {
-  document.documentElement.style.overflow = '';
+// Form Handling
+const form = ref({
+  name: '',
+  email: '',
+  service: '',
+  message: ''
 });
+
+function submitForm() {
+  alert(`¡Gracias ${form.value.name}! Hemos recibido tu solicitud para "${form.value.service}". Te contactaremos pronto a ${form.value.email}.`);
+  // Here you would typically make an inertia visit or axios call
+  // form.value = { name: '', email: '', service: '', message: '' };
+}
+
 </script>
 
 <style scoped>
-/* UX & visual polish */
-:root { --card-radius: 1rem; }
-
-/* Smooth rounded utilities */
-.rounded-3xl { border-radius: var(--card-radius); }
-
-/* Aspect ratio helper used in templates */
-.aspect-\[9\/16\] { position: relative; width: 100%; padding-bottom: calc(100% / (9 / 16)); }
-.aspect-\[9\/16\] > img, .aspect-\[9\/16\] > * { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-
-/* Prevent text overlap: ensure headings wrap and have space */
-h1, h2, h3 { word-break: keep-all; }
-
-/* Small responsive adjustments */
-@media (max-width: 640px) {
-  h1 { font-size: 1.5rem; }
-  .w-64 { width: 12rem; }
+/* Keyframes for soft animations */
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes float-medium {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* Subtle floating animation for hero decorations (if used) */
-@keyframes floaty { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
-.animate-floaty { animation: floaty 6s ease-in-out infinite; }
-
-/* Accessibility focus outlines */
-button:focus, a:focus, input:focus, select:focus { outline: 3px solid rgba(124,58,237,0.16); outline-offset: 3px; }
-
-/* Minor shadow */
-.shadow-2xl { box-shadow: 0 20px 40px rgba(16,24,40,0.08); }
+.animate-float-slow {
+    animation: float-slow 6s ease-in-out infinite;
+}
+.animate-float-medium {
+    animation: float-medium 5s ease-in-out infinite;
+}
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+}
+.animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 </style>
